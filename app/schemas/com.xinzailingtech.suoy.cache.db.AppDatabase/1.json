@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "f8a309f1b19d9c7a010ac88a2a9082e7",
+    "identityHash": "17d7ccea681a80b460412cdbe776df49",
     "entities": [
       {
         "tableName": "user",
@@ -38,12 +38,18 @@
       },
       {
         "tableName": "github_repo",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `node_id` TEXT NOT NULL, `full_name` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `full_name` TEXT NOT NULL, `node_id` TEXT NOT NULL, `private` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "full_name_db",
+            "columnName": "full_name",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -53,9 +59,9 @@
             "notNull": true
           },
           {
-            "fieldPath": "full_name",
-            "columnName": "full_name",
-            "affinity": "TEXT",
+            "fieldPath": "_private",
+            "columnName": "private",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -72,7 +78,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f8a309f1b19d9c7a010ac88a2a9082e7')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '17d7ccea681a80b460412cdbe776df49')"
     ]
   }
 }

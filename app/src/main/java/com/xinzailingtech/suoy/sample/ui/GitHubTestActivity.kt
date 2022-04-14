@@ -65,6 +65,10 @@ class GitHubTestActivity: BaseActivity() {
         binding.buttonUserDetail.setOnClickListener {
             gitHubTestViewModel.userId.postValue("")
         }
+
+        binding.buttonRepos.setOnClickListener {
+            gitHubTestViewModel.showReposDbData()
+        }
     }
 
 }

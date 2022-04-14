@@ -7,6 +7,7 @@ import com.xinzailingtech.suoy.sample.data.GitHubRepository
 import com.xinzailingtech.suoy.sample.data.bean.GitHubRepo
 import com.xinzailingtech.suoy.sample.data.local.User
 import com.xzl.android.log.log
+import kotlinx.coroutines.launch
 
 /**
  * Created by caoj on 2022/3/31.
@@ -59,6 +60,13 @@ class GitHubTestViewModel(application: Application): BaseViewModel(application) 
             // val remoteUser = repo.remoteUser(id)
             // emit(remoteUser)
             emit(User(name = "remote name", age = 11))
+        }
+    }
+
+    fun showReposDbData() {
+        viewModelScope.launch {
+            val data = repo.localRepos()
+            log(data)
         }
     }
 
