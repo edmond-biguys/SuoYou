@@ -9,7 +9,57 @@ import okhttp3.Interceptor
 import okhttp3.Response
 
 /**
- *  1**	信息，服务器收到请求，需要请求者继续执行操作
+ * 这里拦截的是http response code，并非业务逻辑上的code
+ */
+class HttpResponseCodeInterceptor: Interceptor {
+    override fun intercept(chain: Interceptor.Chain): Response {
+        try {
+            val response = chain.proceed(chain.request())
+
+            //这里拦截通过code，来做部分通用处理。这里拦截的是http response code，并非业务逻辑上的code
+            dispatchCode(response.code)
+
+            return response
+        } catch (e: Exception) {
+            log(e)
+            throw e
+        }
+    }
+
+    private fun dispatchCode(code: Int) {
+        //todo 临时处理
+        val handler = Handler(Looper.getMainLooper())
+        log("response code is $code")
+        handler.post {
+            when(code) {
+                in 200..299 -> {
+                    Toast.makeText(App.instance, "请求成功", Toast.LENGTH_SHORT).show()
+                }
+                in 300..399 -> {
+                    Toast.makeText(App.instance, "接口重定向", Toast.LENGTH_SHORT).show()
+                }
+                400 -> {
+                    Toast.makeText(App.instance, "请求参数错误", Toast.LENGTH_SHORT).show()
+                }
+                404 -> {
+                    Toast.makeText(App.instance, "找不到目标地址", Toast.LENGTH_SHORT).show()
+                }
+                in 405..499 -> {
+                    if (code != 400 && code != 404)
+                        Toast.makeText(App.instance, "客户端异常 $code", Toast.LENGTH_SHORT).show()
+                }
+                in 500..599 -> {
+                    Toast.makeText(App.instance, "服务端错误", Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    Toast.makeText(App.instance, "unKnow error", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+}
+/*
+    1**	信息，服务器收到请求，需要请求者继续执行操作
     2**	成功，操作被成功接收并处理
     3**	重定向，需要进一步的操作以完成请求
     4**	客户端错误，请求包含语法错误或无法完成请求
@@ -58,50 +108,3 @@ import okhttp3.Response
     505	HTTP Version not supported	服务器不支持请求的HTTP协议的版本，无法完成处理
  * Created by caoj on 2022/4/25.
  */
-class ExceptionInterceptor: Interceptor {
-    override fun intercept(chain: Interceptor.Chain): Response {
-        try {
-            val response = chain.proceed(chain.request())
-
-            //这里拦截通过code，来做部分通用处理。
-            dispatchCode(response.code)
-
-            return response
-        } catch (e: Exception) {
-            log(e)
-            throw e
-        }
-    }
-
-    private fun dispatchCode(code: Int) {
-        //todo 临时处理
-        val handler = Handler(Looper.getMainLooper())
-        log("response code is $code")
-        handler.post {
-            when(code) {
-                in 200..299 -> {
-                    Toast.makeText(App.instance, "请求成功", Toast.LENGTH_SHORT).show()
-                }
-                in 300..399 -> {
-                    Toast.makeText(App.instance, "接口重定向", Toast.LENGTH_SHORT).show()
-                }
-                400 -> {
-                    Toast.makeText(App.instance, "请求参数错误", Toast.LENGTH_SHORT).show()
-                }
-                404 -> {
-                    Toast.makeText(App.instance, "找不到目标地址", Toast.LENGTH_SHORT).show()
-                }
-                in 405..499 -> {
-                    if (code != 400 && code != 404)
-                        Toast.makeText(App.instance, "客户端异常 $code", Toast.LENGTH_SHORT).show()
-                }
-                in 500..599 -> {
-                    Toast.makeText(App.instance, "服务端错误", Toast.LENGTH_SHORT).show()
-                }
-                else -> {
-                    Toast.makeText(App.instance, "unKnow error", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
-}

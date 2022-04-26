@@ -1,6 +1,6 @@
 package com.xinzailingtech.suoy.base
 
-import com.xinzailingtech.suoy.okhttp.interceptor.ExceptionInterceptor
+import com.xinzailingtech.suoy.okhttp.interceptor.HttpResponseCodeInterceptor
 import com.xinzailingtech.suoy.okhttp.interceptor.HeaderInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -28,7 +28,7 @@ open class BaseService {
         //添加header信息
         okHttpClientBuilder.addInterceptor(HeaderInterceptor())
         //添加返回异常通用处理
-        okHttpClientBuilder.addInterceptor(ExceptionInterceptor())
+        okHttpClientBuilder.addInterceptor(HttpResponseCodeInterceptor())
 
         retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
