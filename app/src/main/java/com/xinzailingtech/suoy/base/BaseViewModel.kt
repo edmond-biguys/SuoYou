@@ -19,6 +19,13 @@ open class BaseViewModel(application: Application): AndroidViewModel(application
     private val _spinner = MutableLiveData<Boolean>()
     val spinner: LiveData<Boolean>
         get() = _spinner
+
+    fun showLoading() {
+        _spinner.postValue(true)
+    }
+    fun dismissLoading() {
+        _spinner.postValue(false)
+    }
     fun launchDataLoad(block: suspend ()-> Unit): Job {
         log("2")
         return viewModelScope.launch(Dispatchers.IO) {

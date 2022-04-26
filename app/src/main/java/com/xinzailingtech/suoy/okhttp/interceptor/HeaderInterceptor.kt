@@ -1,5 +1,6 @@
 package com.xinzailingtech.suoy.okhttp.interceptor
 
+import com.xzl.android.log.log
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -11,14 +12,24 @@ class HeaderInterceptor: Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
 
-        val request = chain.request()
-        val requestBuilder = request.newBuilder()
-        requestBuilder.addHeader("Accept", "application/json")
-        requestBuilder.addHeader("Content-type", "application/json")
+        try {
+            val request = chain.request()
+            val requestBuilder = request.newBuilder()
+//        requestBuilder.addHeader("Accept", "application/json")
+            requestBuilder.addHeader("Accept", "application/vnd.github.v3+json")
+            requestBuilder.addHeader("Content-type", "application/json")
 //        //如果已经登录，add token
 //        if (loginEnable) {
 //            requestBuilder.addHeader("token", "token")
 //        }
-        return chain.proceed(requestBuilder.build())
+            val response = chain.proceed(requestBuilder.build())
+            val code = response.code
+
+            log("HeaderInterceptor response code $code")
+            return response
+        } catch (e: Exception) {
+            log("HeaderInterceptor ${e.message}")
+            throw e
+        }
     }
 }

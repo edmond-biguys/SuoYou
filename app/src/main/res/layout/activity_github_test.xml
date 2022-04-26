@@ -67,4 +67,16 @@
         android:textAllCaps="false"
         />
 
+    <Button
+        android:id="@+id/button_create_issue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_repos"
+        android:layout_marginTop="16dp"
+        android:text="Create Issue"
+        android:textAllCaps="false"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

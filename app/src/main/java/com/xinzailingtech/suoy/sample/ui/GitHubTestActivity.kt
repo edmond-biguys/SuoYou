@@ -69,6 +69,10 @@ class GitHubTestActivity: BaseActivity() {
         binding.buttonRepos.setOnClickListener {
             gitHubTestViewModel.showReposDbData()
         }
+
+        binding.buttonCreateIssue.setOnClickListener {
+            gitHubTestViewModel.createIssue()
+        }
     }
 
 }

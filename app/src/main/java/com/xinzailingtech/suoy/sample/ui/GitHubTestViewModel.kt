@@ -3,6 +3,7 @@ package com.xinzailingtech.suoy.sample.ui
 import android.app.Application
 import androidx.lifecycle.*
 import com.xinzailingtech.suoy.base.BaseViewModel
+import com.xinzailingtech.suoy.base.network.Result
 import com.xinzailingtech.suoy.sample.data.GitHubRepository
 import com.xinzailingtech.suoy.sample.data.bean.GitHubRepo
 import com.xinzailingtech.suoy.sample.data.local.User
@@ -41,9 +42,21 @@ class GitHubTestViewModel(application: Application): BaseViewModel(application) 
          1、4 在UI线程，2、3在异步线程，但整体代码看着是顺序执行，UI线程不会被卡住，使用协程，方便阅读。
          */
         log("1 gitHubRepos ${Thread.currentThread()}")
+        //show loading
+        showLoading()
         val repos = repo.remoteRepos()
+        //dismiss loading
+        dismissLoading()
         log("4 gitHubRepos ${Thread.currentThread()}")
-        emit(repos)
+        //emit(repos)
+        when (repos) {
+            is Result.Success -> {
+                emit(repos.data)
+            }
+            is Result.Error -> {
+                log("ViewModel exception ${repos.exception.message}")
+            }
+        }
         log("gitHubRepos $repos")
     }
 
@@ -70,19 +83,27 @@ class GitHubTestViewModel(application: Application): BaseViewModel(application) 
         }
     }
 
-
-
-    /*fun fetchAllUser() {
-        launchDataLoad {
-
-            val users = repo.allLocalUsers()
-            log("users from db $users")
-            if (users.isNotEmpty()) {
-                _user.postValue(users[0])
+    fun createIssue() {
+        viewModelScope.launch {
+            showLoading()
+            when (val result = repo.createIssue()) {
+                is Result.Success -> {
+                    log("GitHubTestViewModel createIssue success ${result.data}")
+                }
+                is Result.Error -> {
+                    log("GitHubTestViewModel createIssue error ${result.exception.message}")
+                }
             }
+            dismissLoading()
+        }
+    }
 
+    //提供另一种调用方法。
+    @Suppress("unused")
+    fun fetchAllUser() {
+        launchDataLoad {
             val repo = repo.remoteRepos()
             log("repo $repo")
         }
-    }*/
+    }
 }

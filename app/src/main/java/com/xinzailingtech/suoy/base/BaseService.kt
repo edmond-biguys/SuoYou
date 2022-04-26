@@ -1,5 +1,6 @@
 package com.xinzailingtech.suoy.base
 
+import com.xinzailingtech.suoy.okhttp.interceptor.ExceptionInterceptor
 import com.xinzailingtech.suoy.okhttp.interceptor.HeaderInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -12,32 +13,27 @@ import retrofit2.converter.gson.GsonConverterFactory
 open class BaseService {
 
     protected var retrofit: Retrofit
+    companion object {
+        const val BASE_URL = "https://api.github.com/"
+    }
 
     init {
         val okHttpClientBuilder = OkHttpClient.Builder()
 
-        //todo Https
-
-        //todo 添加公共param
-        //添加header信息
-        val commonRequestParamInterceptor = HeaderInterceptor()
-
-
-        //todo 返回异常通用处理
+        //todo Https 证书
 
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         okHttpClientBuilder.addInterceptor(loggingInterceptor)
-
-
-
-        okHttpClientBuilder.addInterceptor(commonRequestParamInterceptor)
+        //添加header信息
+        okHttpClientBuilder.addInterceptor(HeaderInterceptor())
+        //添加返回异常通用处理
+        okHttpClientBuilder.addInterceptor(ExceptionInterceptor())
 
         retrofit = Retrofit.Builder()
-            .baseUrl("https://api.github.com/")
+            .baseUrl(BASE_URL)
             .client(okHttpClientBuilder.build())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
-
 }
