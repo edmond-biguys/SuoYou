@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.xinzailingtech.suoy">
+    package="com.xzlang.suoy">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -10,10 +10,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name=".base.App"
+        android:name="com.xzlang.suoy.base.App"
         android:theme="@style/Theme.SuoYou">
         <activity
-            android:name=".MainActivity"
+            android:name="com.xzlang.suoy.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,10 +22,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".sample.ui.GitHubTestActivity"
+            android:name="com.xzlang.suoy.sample.ui.GitHubTestActivity"
             android:exported="false"
             />
-        <activity android:name=".test.TestActivity"
+        <activity android:name="com.xzlang.suoy.test.TestActivity"
             android:exported="false"
             />
     </application>
