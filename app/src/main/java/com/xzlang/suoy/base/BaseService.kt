@@ -1,5 +1,6 @@
 package com.xzlang.suoy.base
 
+import com.xzlang.suoy.okhttp.interceptor.BusinessResponseCodeInterceptor
 import com.xzlang.suoy.okhttp.interceptor.HttpResponseCodeInterceptor
 import com.xzlang.suoy.okhttp.interceptor.HeaderInterceptor
 import okhttp3.OkHttpClient
@@ -29,7 +30,8 @@ open class BaseService {
         okHttpClientBuilder.addInterceptor(HeaderInterceptor())
         //添加返回异常通用处理
         okHttpClientBuilder.addInterceptor(HttpResponseCodeInterceptor())
-        //todo 这里可以增加一个业务逻辑异常code通用处理interceptor
+        //添加业务逻辑异常code通用处理interceptor
+        okHttpClientBuilder.addInterceptor(BusinessResponseCodeInterceptor())
 
         retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
