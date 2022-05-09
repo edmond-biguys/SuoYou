@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.xzlang.suoy.base.BaseActivity
 import com.xzlang.suoy.databinding.ActivityGithubTestBinding
 import com.xzl.android.log.log
+import com.xzlang.suoy.base.viewbinding.inflate
 import java.lang.Exception
 
 /**
@@ -13,13 +14,19 @@ import java.lang.Exception
  */
 class GitHubTestActivity: BaseActivity() {
 
-    private lateinit var binding: ActivityGithubTestBinding
+    private val binding: ActivityGithubTestBinding by inflate()
+
     private lateinit var gitHubTestViewModel: GitHubTestViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         gitHubTestViewModel = ViewModelProvider(this)[GitHubTestViewModel::class.java]
         super.onCreate(savedInstanceState)
-        binding = ActivityGithubTestBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+
+        /*
+        这个日志可以看到，0打印时间较早，1、2打印时间较晚，所以使用lazy，binding在使用时，不会因为未被初始化而报错。
+         */
+        log("GitHubTestActivity onCreate0")
+        log("GitHubTestActivity onCreate1 $binding")
+        log("GitHubTestActivity onCreate2")
     }
 
     override fun bindViewModel() {
@@ -42,7 +49,6 @@ class GitHubTestActivity: BaseActivity() {
 
     override fun setOnClickListener() {
         super.setOnClickListener()
-
         binding.buttonShowDialog.setOnClickListener {
 
             try {
