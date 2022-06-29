@@ -17,6 +17,7 @@ class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
 
         super.onCreate(savedInstanceState)
