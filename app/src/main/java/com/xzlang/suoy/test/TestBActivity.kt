@@ -3,19 +3,24 @@ package com.xzlang.suoy.test
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.xzl.android.log.log
-import com.xzlang.suoy.databinding.ActivityTestBBinding
+import com.xzlang.suoy.R
 
 
 class TestBActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityTestBBinding
+//    private lateinit var binding: ActivityTestBBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         log("b create")
-        binding = ActivityTestBBinding.inflate(layoutInflater).also {
-            setContentView(it.root)
-        }
+        setContentView(R.layout.activity_test_b)
+
+//        binding = ActivityTestBBinding.inflate(layoutInflater).also {
+//            setContentView(it.root)
+//        }
 
     }
+    /*
+    B activity 在AndroidManifest中设置android:theme="@style/Theme.AppCompat.DayNight.Dialog"时，A不会回调onStop
+     */
 
 
     override fun onStart() {
